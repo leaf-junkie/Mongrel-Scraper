@@ -23,51 +23,48 @@ app.use(express.static("public"));
 // ROUTES
 // A GET route for scraping the website
 app.get("/scrape", (req, res) => {
-  // First, we grab the body of the html with axios
-  axios.get("https://savinggracenc.org/our-dogs/").then(response => {
+    // First, we grab the body of the html with axios
+    axios.get("https://savinggracenc.org/our-dogs/").then(response => {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     const $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
     $(".picture-item").each((i, element) => {
-      // Save an empty result object
-      const result = {};
+        // Save an empty result object
+        const result = {};
 
-      // Add the text and href of every link, and save them as properties of the result object
-      result.name = $(element).children("div.picture-item__title").text();
-      result.pic = $(element).children("div.picture-item__glyph").attr("src");
-      result.breed = $(element).children("div.picture-item_tags.item__breed-tag").text();
-      result.tags = $(element).children("div.picture-item__tags").text();
-      result.description = $(element).children("div.my-pet-description.pf-description").text();
-      result.link = $(element).children("div.my-pet-petfinder_url.a").attr("href");
+        // Add the text and href of every link, and save them as properties of the result object
+        result.name = $(element).children("div.picture-item__title").text();
+        result.pic = $(element).children("div.picture-item__glyph").attr("src");
+        result.breed = $(element).children("div.picture-item_tags.item__breed-tag").text();
+        result.tags = $(element).children("div.picture-item__tags").text();
+        result.description = $(element).children("div.my-pet-description.pf-description").text();
+        result.link = $(element).children("div.my-pet-petfinder_url.a").attr("href");
 
-      // Create a new Dog using the `result` object built from scraping
-      db.Dog.create(result)
+        // Create a new Dog using the `result` object built from scraping
+        db.Dog.create(result)
         .then(dbDog => {
-          // View the added result in the console
-          console.log(dbDog);
+            // View the added result in the console
+            console.log(dbDog);
         })
         .catch(err => {
-          // If an error occurred, log it
-          console.log(err);
+            // If an error occurred, log it
+            console.log(err);
         });
     });
 
     // Send a message to the client
     res.send("Scrape Complete");
-  });
+    });
 });
 
 // Route for getting all Dogs from the db
 app.get("/rescue", (req, res) => {
-  // Grab every document in the Dogs collection
   db.Dog.find({})
     .then(dbDog => {
-      // If we were able to successfully find Dogs, send them back to the client
       res.json(dbDog);
     })
     .catch(err => {
-      // If an error occurred, send it to the client
       res.json(err);
     });
 });
@@ -79,11 +76,9 @@ app.get("/rescue/:id", (req, res) => {
     // ..and populate all of the notes associated with it
     .populate("note")
     .then(dbDog => {
-      // If we were able to successfully find a Dog with the given id, send it back to the client
       res.json(dbDog);
     })
     .catch(err => {
-      // If an error occurred, send it to the client
       res.json(err);
     });
 });
@@ -99,11 +94,9 @@ app.post("/rescue/:id", (req, res) => {
       return db.Dog.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
     })
     .then(dbDog => {
-      // If we were able to successfully update a Dog, send it back to the client
       res.json(dbDog);
     })
     .catch(err => {
-      // If an error occurred, send it to the client
       res.json(err);
     });
 });

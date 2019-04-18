@@ -1,9 +1,9 @@
 // Grab the dogs as a json
-$.getJSON("/rescue", data => {
-    // For each dog
+$.getJSON("/dogs", data => {
+    // For each one
     for (let i = 0; i < data.length; i++) {
-      // TODO: Display the apropos information on the page
-      $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+      // Display the apropriate information on the page
+      $("#dogs").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
     }
   });
   
@@ -15,24 +15,24 @@ $.getJSON("/rescue", data => {
     // Save the id from the p tag
     const thisId = $(this).attr("data-id");
   
-    // Now make an ajax call for the Dog
+    // Now make an ajax call for the dog
     $.ajax({
       method: "GET",
-      url: "/rescue/" + thisId
+      url: "/dogs/" + thisId
     })
       // With that done, add the note information to the page
       .then(data => {
         console.log(data);
-        // The title of the article
+        // The title of the dog
         $("#notes").append("<h2>" + data.title + "</h2>");
         // An input to enter a new title
         $("#notes").append("<input id='titleinput' name='title' >");
         // A textarea to add a new note body
         $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
-        // A button to submit a new note, with the id of the article saved to it
+        // A button to submit a new note, with the id of the dog saved to it
         $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
   
-        // If there's a note in the article
+        // If there's a note in the dog
         if (data.note) {
           // Place the title of the note in the title input
           $("#titleinput").val(data.note.title);
@@ -44,7 +44,7 @@ $.getJSON("/rescue", data => {
   
   // When you click the savenote button
   $(document).on("click", "#savenote", function() {
-    // Grab the id associated with the article from the submit button
+    // Grab the id associated with the dog from the submit button
     const thisId = $(this).attr("data-id");
   
     // Run a POST request to change the note, using what's entered in the inputs
