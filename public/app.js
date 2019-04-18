@@ -1,8 +1,8 @@
-// Grab the articles as a json
-$.getJSON("/articles", data => {
-    // For each one
+// Grab the dogs as a json
+$.getJSON("/rescue", data => {
+    // For each dog
     for (let i = 0; i < data.length; i++) {
-      // Display the apropos information on the page
+      // TODO: Display the apropos information on the page
       $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
     }
   });
@@ -15,10 +15,10 @@ $.getJSON("/articles", data => {
     // Save the id from the p tag
     const thisId = $(this).attr("data-id");
   
-    // Now make an ajax call for the Article
+    // Now make an ajax call for the Dog
     $.ajax({
       method: "GET",
-      url: "/articles/" + thisId
+      url: "/rescue/" + thisId
     })
       // With that done, add the note information to the page
       .then(data => {
@@ -50,7 +50,7 @@ $.getJSON("/articles", data => {
     // Run a POST request to change the note, using what's entered in the inputs
     $.ajax({
       method: "POST",
-      url: "/articles/" + thisId,
+      url: "/dogs/" + thisId,
       data: {
         // Value taken from title input
         title: $("#titleinput").val(),
