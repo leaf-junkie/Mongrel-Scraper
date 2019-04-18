@@ -4,12 +4,12 @@ const mongoose = require("mongoose");
 const logger = require("morgan");
 const axios = require("axios");
 const cheerio = require("cheerio");
-// const db = require("./models");
+const db = require("./models");
 const PORT = 3003;
 const app = express();
 
 // Connect to the Mongo database
-mongoose.connect("mongodb://localhost/rescue", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/dogs", { useNewUrlParser: true });
 
 // MIDDLEWARE CONFIGURATION: 
 // Use morgan logger for logging requests
@@ -59,7 +59,7 @@ app.get("/scrape", (req, res) => {
 });
 
 // Route for getting all Dogs from the db
-app.get("/rescue", (req, res) => {
+app.get("/dogs", (req, res) => {
   db.Dog.find({})
     .then(dbDog => {
       res.json(dbDog);
@@ -70,7 +70,7 @@ app.get("/rescue", (req, res) => {
 });
 
 // Route for grabbing a specific Dog by id, populate it with it's note
-app.get("/rescue/:id", (req, res) => {
+app.get("/dogs/:id", (req, res) => {
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
   db.Dog.findOne({ _id: req.params.id })
     // ..and populate all of the notes associated with it
@@ -84,7 +84,7 @@ app.get("/rescue/:id", (req, res) => {
 });
 
 // Route for saving/updating an Dog's associated Note
-app.post("/rescue/:id", (req, res) => {
+app.post("/dogs/:id", (req, res) => {
   // Create a new note and pass the req.body to the entry
   db.Note.create(req.body)
     .then(dbNote => {
