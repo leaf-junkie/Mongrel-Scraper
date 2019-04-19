@@ -1,5 +1,8 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
+const router = express.Router;
+const path = require("path");
+const fs = require("fs");
 const mongoose = require("mongoose");
 const logger = require("morgan");
 const axios = require("axios");
@@ -22,15 +25,11 @@ app.use(express.static("public"));
 
 // ROUTES
 // A GET route for scraping the website
-app.get("/scrape", (req, res) => {
-    // First, we grab the body of the html with axios
+app.get("/srcape", (req, res) => {
     axios.get("https://savinggracenc.org/our-dogs/").then(response => {
-    // Then, we load that into cheerio and save it to $ for a shorthand selector
     const $ = cheerio.load(response.data);
 
-    // Now, we grab every h2 within an article tag, and do the following:
     $(".picture-item").each((i, element) => {
-        // Save an empty result object
         const result = {};
 
         // Add the text and href of every link, and save them as properties of the result object
@@ -44,11 +43,9 @@ app.get("/scrape", (req, res) => {
         // Create a new Dog using the `result` object built from scraping
         db.Dog.create(result)
         .then(dbDog => {
-            // View the added result in the console
             console.log(dbDog);
         })
         .catch(err => {
-            // If an error occurred, log it
             console.log(err);
         });
     });
@@ -57,6 +54,12 @@ app.get("/scrape", (req, res) => {
     res.send("Scrape Complete");
     });
 });
+
+// Redirect "/" to "/dogs"
+// router.get("/", function(req, res) {
+//   const html = fs.readFileSync(path.join(__dirname, "/dogs.html"));
+//   res.send(html.toString());
+// });
 
 // Route for getting all Dogs from the db
 app.get("/dogs", (req, res) => {
@@ -73,7 +76,6 @@ app.get("/dogs", (req, res) => {
 app.get("/dogs/:id", (req, res) => {
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
   db.Dog.findOne({ _id: req.params.id })
-    // ..and populate all of the notes associated with it
     .populate("note")
     .then(dbDog => {
       res.json(dbDog);
@@ -83,7 +85,7 @@ app.get("/dogs/:id", (req, res) => {
     });
 });
 
-// Route for saving/updating an Dog's associated Note
+// Route for saving/updating a Dog's associated Note
 app.post("/dogs/:id", (req, res) => {
   // Create a new note and pass the req.body to the entry
   db.Note.create(req.body)
