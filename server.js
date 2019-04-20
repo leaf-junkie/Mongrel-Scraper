@@ -1,31 +1,34 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
-const router = express.Router;
-const path = require("path");
-const fs = require("fs");
 const mongoose = require("mongoose");
 const logger = require("morgan");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("./models");
-const PORT = 3003;
+const PORT = 8080;
 const app = express();
 
 // Connect to the Mongo database
 mongoose.connect("mongodb://localhost/dogs", { useNewUrlParser: true });
 
-// MIDDLEWARE CONFIGURATION: 
+// MIDDLEWARE CONFIGURATION:
 // Use morgan logger for logging requests
 app.use(logger("dev"));
+
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Make public a static folder
+
+// Set up handlebars
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
 app.use(express.static("public"));
 
 // ROUTES
+app.get("/", (req, res) => res.render("index"));
+
 // A GET route for scraping the website
-app.get("/srcape", (req, res) => {
+app.get("/scrape", (req, res) => {
     axios.get("https://savinggracenc.org/our-dogs/").then(response => {
     const $ = cheerio.load(response.data);
 
