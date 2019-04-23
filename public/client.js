@@ -1,11 +1,11 @@
 // Grab the dogs as a json
-app.get("/dogs", data => {
-  // For each one
-  for (let i = 0; i < data.length; i++) {
-    // Display the apropriate information on the page
-    $(".dogs").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
-  }
-});
+// app.get("/dogs", data => {
+//   // For each one
+//   for (let i = 0; i < data.length; i++) {
+//     // Display the apropriate information on the page
+//     $(".dogs").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+//   }
+// });
   
 // On click, scrape new data from Saving Grace 
 // $("").on("click", function() {
