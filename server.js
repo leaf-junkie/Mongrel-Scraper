@@ -39,30 +39,24 @@ console.log("Scraping poo off our shoes...");
 
     $(".picture-item__inner").each((i, element) => {
         // Add the text and href of every link...
-        result.name = $(element).children().text(),
-        result.pic = $(element).children().attr("src"),
-        result.breed = $(element).children().text(),
-        result.tags = $(element).children().text(),
-        result.description = $(element).children().text(),
-        result.link = $(element).children().attr("href")
+        const name = $(element).find("div.picture-item__title").text();
+        const pic = $(element).find("div.picture-item__glyph").attr("src");
+        const breed = $(element).find("div.picture-item_tags").find("item__breed-tag").text();
+        const tags = $(element).find("div.picture-item__tags").text();
+        const description = $(element).find("div.my-pet-description").find(".pf-description").text();
+        const link = $(element).find("div.my-pet-petfinder_url").find("a").attr("href");
 
         // ...and save them as properties of the result object
         result.push({
-          name: result.name,
-          pic: result.pic,
-          breed: result.breed,
-          tags: result.tags,
-          description: result.description,
-          link: result.link
+          name,
+          pic,
+          breed,
+          tags,
+          description,
+          link
         });
 
         console.log(result);
-        // result.name = $(element).children("div.picture-item__title").text();
-        // result.pic = $(element).children("div.picture-item__glyph").attr("src");
-        // result.breed = $(element).children("div.picture-item_tags.item__breed-tag").text();
-        // result.tags = $(element).children("div.picture-item__tags").text();
-        // result.description = $(element).children("div.my-pet-description.pf-description").text();
-        // result.link = $(element).children("div.my-pet-petfinder_url.a").attr("href");
 
         // Create a new Dog using the `result` object built from scraping
         db.Dog.create(result)
