@@ -27,6 +27,8 @@ app.use(express.static("public"));
 // ROUTES
 app.get("/", (req, res) => res.render("index"));
 
+app.get("/favorites", (req, res) => res.render("favorites"));
+
 // A GET route for scraping the website
 app.get("/scrape", (req, res) => {
     axios.get("https://savinggracenc.org/our-dogs/").then(response => {
