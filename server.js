@@ -30,20 +30,39 @@ app.get("/", (req, res) => res.render("index"));
 app.get("/favorites", (req, res) => res.render("favorites"));
 
 // A GET route for scraping the website
-app.get("/scrape", (req, res) => {
+console.log("Scraping poo off our shoes...");
+
+// app.get("/scrape", (req, res) => {
     axios.get("https://savinggracenc.org/our-dogs/").then(response => {
     const $ = cheerio.load(response.data);
+    const result = [];
 
-    $(".picture-item").each((i, element) => {
-        const result = {};
+    $(".picture-item__inner").each((i, element) => {
+        // Add the text and href of every link...
+        result.name = $(element).children().text(),
+        result.pic = $(element).children().attr("src"),
+        result.breed = $(element).children().text(),
+        result.tags = $(element).children().text(),
+        result.description = $(element).children().text(),
+        result.link = $(element).children().attr("href")
 
-        // Add the text and href of every link, and save them as properties of the result object
-        result.name = $(element).children("div.picture-item__title").text();
-        result.pic = $(element).children("div.picture-item__glyph").attr("src");
-        result.breed = $(element).children("div.picture-item_tags.item__breed-tag").text();
-        result.tags = $(element).children("div.picture-item__tags").text();
-        result.description = $(element).children("div.my-pet-description.pf-description").text();
-        result.link = $(element).children("div.my-pet-petfinder_url.a").attr("href");
+        // ...and save them as properties of the result object
+        result.push({
+          name: result.name,
+          pic: result.pic,
+          breed: result.breed,
+          tags: result.tags,
+          description: result.description,
+          link: result.link
+        });
+
+        console.log(result);
+        // result.name = $(element).children("div.picture-item__title").text();
+        // result.pic = $(element).children("div.picture-item__glyph").attr("src");
+        // result.breed = $(element).children("div.picture-item_tags.item__breed-tag").text();
+        // result.tags = $(element).children("div.picture-item__tags").text();
+        // result.description = $(element).children("div.my-pet-description.pf-description").text();
+        // result.link = $(element).children("div.my-pet-petfinder_url.a").attr("href");
 
         // Create a new Dog using the `result` object built from scraping
         db.Dog.create(result)
@@ -58,12 +77,6 @@ app.get("/scrape", (req, res) => {
     // Send a message to the client
     res.send("Scrape Complete");
     });
-});
-
-// Redirect "/" to "/dogs"
-// router.get("/", function(req, res) {
-//   const html = fs.readFileSync(path.join(__dirname, "/dogs.html"));
-//   res.send(html.toString());
 // });
 
 // Route for getting all Dogs from the db
