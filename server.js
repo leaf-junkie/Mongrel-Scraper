@@ -5,11 +5,13 @@ const logger = require("morgan");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("./models");
-const PORT = 8080;
 const app = express();
+const PORT = process.env.PORT || 8080;
 
 // Connect to the Mongo database
-mongoose.connect("mongodb://localhost/scraper", { useNewUrlParser: true });
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper";
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // MIDDLEWARE CONFIGURATION:
 // Use morgan logger for logging requests
