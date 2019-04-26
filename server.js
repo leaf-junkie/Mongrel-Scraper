@@ -25,7 +25,14 @@ app.set('view engine', 'handlebars');
 app.use(express.static("public"));
 
 // ROUTES
-app.get("/", (req, res) => res.render("index"));
+app.get("/", (req, res) => {
+  db.Dog.find(function(err, docs) {
+    // console.log(docs)
+    res.render("index", {
+      dogs: docs
+    });
+  });
+});
 
 app.get("/favorites", (req, res) => res.render("favorites"));
 
@@ -43,7 +50,8 @@ app.get("/scrape", (req, res) => {
         const pic = $(element).find("div.picture-item__glyph").find("p").find("img").attr("src");
         const breed = $(element).find("div.picture-item_tags").find("item__breed-tag").text();
         const tags = $(element).find("div.picture-item__tags").text();
-        const description = $(element).find("div.my-pet-description").find(".pf-description").text();
+        let description = $(element).find("div.my-pet-description").find(".pf-description").text();
+        description = description.substr(0, description.indexOf("All puppies and dogs"));
         const link = $(element).find("div.my-pet-petfinder_url").find("a").attr("href");
 
         const dog = {

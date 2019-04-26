@@ -2,14 +2,15 @@
 
 <div class="container-fluid justify-content-center">
   <h3>Check out the adoptable dogs at Saving Grace!</h3>
-  <a class="btn btn-primary btn-lg" href="/" role="button" title="Check for newly added dogs">Check for New Dogs</a>
-
+  <button class="btn btn-primary btn-lg" role="button" title="Check for newly added dogs">Check for New Dogs</button>
+  <br>
   <ul class="dogList">
-    {{#each dog}}
-      <li>{{> dog-block }}</li>
+    {{#each dogs}}
+      <li>
+        {{> dog-block}}
+      </li>
     {{/each}}
   </ul>
-
 </div>
 
 {{> footer-block }}
