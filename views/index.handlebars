@@ -2,9 +2,10 @@
 
 <div class="container-fluid justify-content-center">
   <h3>Check out the adoptable dogs at Saving Grace!</h3>
-  <button class="btn btn-primary btn-lg" role="button" title="Check for newly added dogs">Check for New Dogs</button>
+  <button id="scrapeBtn" class="btn btn-primary btn-lg" role="button" title="Check for newly added dogs">Check for New Dogs</button>
   <br>
   <ul class="dogList">
+    {{> modal-block }}
     {{#each dogs}}
       <li>
         {{> dog-block}}

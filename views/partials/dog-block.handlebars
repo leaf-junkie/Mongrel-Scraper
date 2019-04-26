@@ -5,7 +5,11 @@
         {{!-- <p>{{ breed }}</p> --}}
         <p>{{ tags }}</p>
         <p class="card-text">{{ description }}</p>
-        <a href={{ link }} class="btn btn-primary" title="Click to favorite"><i class="far fa-heart"></i>More</a>
-        <a href={{ note }} class="btn btn-secondary" title="View note"><i class="far fa-heart"></i>View Note</a>
+        <a href={{ link }} class="btn btn-primary" title="Learn more">More</a>
+        
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" title="View note">
+        View Note
+        </button>
     </div>
 </div>

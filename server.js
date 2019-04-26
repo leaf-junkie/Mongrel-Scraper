@@ -51,7 +51,7 @@ app.get("/scrape", (req, res) => {
         const breed = $(element).find("div.picture-item_tags").find("item__breed-tag").text();
         const tags = $(element).find("div.picture-item__tags").text();
         let description = $(element).find("div.my-pet-description").find(".pf-description").text();
-        description = description.substr(0, description.indexOf("All puppies and dogs"));
+        description = description.substr(0, 140) + "...";
         const link = $(element).find("div.my-pet-petfinder_url").find("a").attr("href");
 
         const dog = {
