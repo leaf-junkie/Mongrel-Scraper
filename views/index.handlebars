@@ -2,12 +2,11 @@
 
 <div class="container-fluid justify-content-center">
   <h3>Check out the adoptable dogs at Saving Grace!</h3>
-  <a class="btn btn-primary btn-lg" href="#" role="button" title="Check for newly added dogs">Check for New Dogs</a>
+  <a class="btn btn-primary btn-lg" href="/" role="button" title="Check for newly added dogs">Check for New Dogs</a>
 
-  {{!-- TODO: Make sure data render correctly --}}
-  <ul>
-    {{#each dogs}}
-      {{> dog-block }}
+  <ul class="dogList">
+    {{#each dog}}
+      <li>{{> dog-block }}</li>
     {{/each}}
   </ul>
 

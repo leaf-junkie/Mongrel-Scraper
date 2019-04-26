@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+// mongoose.connect('mongodb://localhost:27017/scraper');
+
 // Save a reference to the Schema constructor
 const Schema = mongoose.Schema;
 
@@ -8,7 +10,8 @@ const Schema = mongoose.Schema;
 const DogSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   pic: {
     type: String,

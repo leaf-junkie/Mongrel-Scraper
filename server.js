@@ -9,7 +9,7 @@ const PORT = 8080;
 const app = express();
 
 // Connect to the Mongo database
-mongoose.connect("mongodb://localhost/dogs", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/scraper", { useNewUrlParser: true });
 
 // MIDDLEWARE CONFIGURATION:
 // Use morgan logger for logging requests
@@ -29,10 +29,10 @@ app.get("/", (req, res) => res.render("index"));
 
 app.get("/favorites", (req, res) => res.render("favorites"));
 
-// A GET route for scraping the website
 console.log("Scraping poo off our shoes...");
 
-// app.get("/scrape", (req, res) => {
+// A GET route for scraping the website
+app.get("/scrape", (req, res) => {
     axios.get("https://savinggracenc.org/our-dogs/").then(response => {
     const $ = cheerio.load(response.data);
     const result = [];
@@ -40,38 +40,34 @@ console.log("Scraping poo off our shoes...");
     $(".picture-item__inner").each((i, element) => {
         // Add the text and href of every link...
         const name = $(element).find("div.picture-item__title").text();
-        const pic = $(element).find("div.picture-item__glyph").attr("src");
+        const pic = $(element).find("div.picture-item__glyph").find("p").find("img").attr("src");
         const breed = $(element).find("div.picture-item_tags").find("item__breed-tag").text();
         const tags = $(element).find("div.picture-item__tags").text();
         const description = $(element).find("div.my-pet-description").find(".pf-description").text();
         const link = $(element).find("div.my-pet-petfinder_url").find("a").attr("href");
 
-        // ...and save them as properties of the result object
-        result.push({
+        const dog = {
           name,
           pic,
           breed,
           tags,
           description,
           link
-        });
+        };
 
-        console.log(result);
-
-        // Create a new Dog using the `result` object built from scraping
-        db.Dog.create(result)
+        db.Dog.create(dog)
         .then(dbDog => {
-            console.log(dbDog);
+            // console.log(dbDog);
         })
         .catch(err => {
-            console.log(err);
+            // console.log(`Duplicate key: ${dog.name}`);
         });
     });
 
     // Send a message to the client
     res.send("Scrape Complete");
     });
-// });
+});
 
 // Route for getting all Dogs from the db
 app.get("/dogs", (req, res) => {
