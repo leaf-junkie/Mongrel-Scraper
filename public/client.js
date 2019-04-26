@@ -22,6 +22,10 @@ $(document).ready(function() {
       var note = modal.find("#note-text").val();
       axios.post(`/dogs/${dogName}/notes`, {
         note
+      })
+      .then(response => {
+        modal.find("#saveNote").off("click");
+        modal.attr("aria-hidden", true);
       });
     });
   });
