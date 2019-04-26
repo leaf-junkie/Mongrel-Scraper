@@ -1,17 +1,18 @@
 {{> nav-block }}
 
-<div class="container-fluid justify-content-center">
+<div class="container-fluid text-center">
   <h3>Check out the adoptable dogs at Saving Grace!</h3>
   <button id="scrapeBtn" class="btn btn-primary btn-lg" role="button" title="Check for newly added dogs">Check for New Dogs</button>
-  <br>
-  <ul class="dogList">
-    {{> modal-block }}
-    {{#each dogs}}
-      <li>
-        {{> dog-block}}
-      </li>
-    {{/each}}
-  </ul>
+  <div class="dogContainer">
+    <ul class="dogList">
+      {{> modal-block }}
+      {{#each dogs}}
+        <li class="col-sm">
+          {{> dog-block}}
+        </li>
+      {{/each}}
+    </ul>
+  </div>
 </div>
 
 {{> footer-block }}

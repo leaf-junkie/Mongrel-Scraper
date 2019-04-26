@@ -1,6 +1,21 @@
+#scrapeBtn {
+    margin: 50px auto;
+}
+
+.dogContainer {
+    text-align: left;
+}
+
+.card {
+    float: left;
+    margin: 25px 15px;
+}
+
 footer {
     text-align: center;
     position: fixed;
     bottom: 0;
     width: 100%;
+    height: 50px;
+    margin-top: 50px;
 }
